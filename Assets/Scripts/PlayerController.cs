@@ -5,6 +5,7 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
+    [SerializeField] private TrajectoryVisualizer tv;
 
     private Vector2 startPosition;
     private bool isDragging = false;
@@ -13,7 +14,7 @@ public class PlayerController : MonoBehaviour
     {
         if (isDragging)
         {
-            Debug.Log(CalculateLaunchDirection());
+            tv.UpdateTrajectory(Vector2.zero, CalculateLaunchDirection());
         }
     }
 
@@ -26,6 +27,7 @@ public class PlayerController : MonoBehaviour
     public void OnRelease()
     {
         isDragging = false;
+        tv.ResetTrajectory();
     }
 
     // Launch direction is opposite of the drag direction
