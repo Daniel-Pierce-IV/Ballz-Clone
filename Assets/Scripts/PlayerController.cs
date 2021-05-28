@@ -1,38 +1,71 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
     [SerializeField] private TrajectoryVisualizer tv;
 
+    private const int MOUSE_BUTTON_PRIMARY = 0;
     private Vector2 startPosition;
-    private bool isDragging = false;
 
     private void Update()
     {
-        if (isDragging)
+        if (Input.touchCount > 0)
         {
-            tv.UpdateTrajectory(Vector2.zero, CalculateLaunchDirection());
+            if(Input.touches[0].phase == TouchPhase.Ended) StopDragging();
+            else HandleTouchInput();
+        }
+        else if (Input.GetMouseButton(MOUSE_BUTTON_PRIMARY))
+        {
+            HandleMouseInput();
+        }
+        else if (Input.GetMouseButtonUp(MOUSE_BUTTON_PRIMARY))
+        {
+            StopDragging();
         }
     }
 
-    public void OnPress()
+    private void HandleMouseInput()
     {
-        isDragging = true;
-        startPosition = Pointer.current.position.ReadValue();
+        if (Input.GetMouseButtonDown(MOUSE_BUTTON_PRIMARY))
+        {
+            startPosition = MousePositionVector2();
+        }
+        else
+        {
+            tv.UpdateTrajectory(Vector2.zero,
+                CalculateLaunchDirection(MousePositionVector2()));
+        }
     }
 
-    public void OnRelease()
+    private void HandleTouchInput()
     {
-        isDragging = false;
+        if (Input.touches[0].phase == TouchPhase.Began)
+        {
+            startPosition = Input.touches[0].position;
+        }
+        else
+        {
+            tv.UpdateTrajectory(Vector2.zero,
+                CalculateLaunchDirection(Input.touches[0].position));
+        }
+    }
+
+    private void StopDragging()
+    {
         tv.ResetTrajectory();
     }
 
-    // Launch direction is opposite of the drag direction
-    private Vector2 CalculateLaunchDirection()
+    private Vector2 MousePositionVector2()
     {
-        return (startPosition - Pointer.current.position.ReadValue()).normalized;
+        return new Vector2(Input.mousePosition.x, Input.mousePosition.y);
+    }
+
+    // Launch direction is opposite of the drag direction
+    private Vector2 CalculateLaunchDirection(Vector2 currentPosition)
+    {
+        return (startPosition - currentPosition).normalized;
     }
 }
