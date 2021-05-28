@@ -6,9 +6,12 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     [SerializeField] private TrajectoryVisualizer tv;
+    [SerializeField] private Rigidbody2D Ball;
+    [SerializeField] private float ballSpeed = 5f;
 
     private const int MOUSE_BUTTON_PRIMARY = 0;
     private Vector2 startPosition;
+    private Vector2 launchDirection;
 
     private void Update()
     {
@@ -35,8 +38,8 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            tv.UpdateTrajectory(Vector2.zero,
-                CalculateLaunchDirection(MousePositionVector2()));
+            CalculateLaunchDirection(MousePositionVector2());
+            tv.UpdateTrajectory(Ball.position, launchDirection);
         }
     }
 
@@ -48,14 +51,15 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            tv.UpdateTrajectory(Vector2.zero,
-                CalculateLaunchDirection(Input.touches[0].position));
+            CalculateLaunchDirection(Input.touches[0].position);
+            tv.UpdateTrajectory(Ball.position, launchDirection);
         }
     }
 
     private void StopDragging()
     {
         tv.ResetTrajectory();
+        Ball.velocity = launchDirection * ballSpeed;
     }
 
     private Vector2 MousePositionVector2()
@@ -64,8 +68,8 @@ public class PlayerController : MonoBehaviour
     }
 
     // Launch direction is opposite of the drag direction
-    private Vector2 CalculateLaunchDirection(Vector2 currentPosition)
+    private void CalculateLaunchDirection(Vector2 currentPosition)
     {
-        return (startPosition - currentPosition).normalized;
+        launchDirection = (startPosition - currentPosition).normalized;
     }
 }
