@@ -1,0 +1,5 @@
+The brick grid is 9 rows of 7 columns, 
+with 0.1 unit of spacing vertically and horizontally,
+between each brick and between a brick and the screen edge.
+
+In total, the play area is 10 units y, 7.8 units x.
