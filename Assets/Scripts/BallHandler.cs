@@ -46,5 +46,6 @@ public class BallHandler : MonoBehaviour
         startPosition = new Vector2(rb.position.x, startPosition.y);
         rb.velocity = Vector2.zero;
         transform.position = startPosition;
+        FindObjectOfType<GameController>().DeactivateBalls();
     }
 }
