@@ -1,10 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class BrickController : MonoBehaviour
 {
     [SerializeField] private float lerpDuration = 0.5f;
+    [SerializeField] private Text hitpointText;
 
     // Not configurable unless the way the stage/environment is set up changes
     private const float yMoveAmount = 1.1f;
@@ -12,6 +14,8 @@ public class BrickController : MonoBehaviour
     private Vector3 startPosition;
     private Vector3 endPosition;
     private float startTimestamp;
+
+    private int hitpoints;
 
     // Update is called once per frame
     void Update()
@@ -44,5 +48,28 @@ public class BrickController : MonoBehaviour
     private float CalculateLerpTime()
     {
         return Mathf.Clamp((Time.time - startTimestamp) / lerpDuration, 0, 1);
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        TakeDamage();
+    }
+
+    private void TakeDamage()
+    {
+        hitpoints--;
+        RefreshHitpointText();
+        if (hitpoints <= 0) Destroy(gameObject);
+    }
+
+    public void RefreshHitpointText()
+    {
+        hitpointText.text = hitpoints.ToString();
+    }
+
+    public void SetHitpoints(int value)
+    {
+        hitpoints = value;
+        RefreshHitpointText();
     }
 }
