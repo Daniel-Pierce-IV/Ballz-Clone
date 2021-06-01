@@ -11,17 +11,17 @@ public class BrickManager : MonoBehaviour
     [SerializeField] private int lowerBrickSpawnLimitBuffer = 2;
     [SerializeField] private int upperBrickSpawnLimitBuffer = 1;
 
-    private List<BrickController> bricks = new List<BrickController>();
+    private List<Brick> bricks = new List<Brick>();
     private int currentPhase = 1;
     
     private void CreateBrick(Vector3 position)
     {
-        BrickController brick = Instantiate(
+        Brick brick = Instantiate(
             brickPrefab,
             position,
             Quaternion.identity,
             brickContainer.transform).
-            GetComponent<BrickController>();
+            GetComponent<Brick>();
         
         brick.SetHitpoints(currentPhase);
         bricks.Add(brick);
@@ -40,7 +40,7 @@ public class BrickManager : MonoBehaviour
 
     private void MoveBricks()
     {
-        foreach (BrickController brick in bricks)
+        foreach (Brick brick in bricks)
         {
             brick.MoveDown();
         }

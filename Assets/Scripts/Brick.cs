@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class BrickController : MonoBehaviour
+public class Brick : MonoBehaviour
 {
     [SerializeField] private float lerpDuration = 0.5f;
     [SerializeField] private Text hitpointText;
