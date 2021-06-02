@@ -5,7 +5,17 @@ using UnityEngine;
 public class Powerup : MonoBehaviour, IPoolable<Powerup>
 {
     private GameObjectPool<Powerup> pool;
+    private InterpolatedMover mover;
 
+    private void Awake()
+    {
+        mover = GetComponent<InterpolatedMover>();
+    }
+
+    public void Move()
+    {
+        mover.MoveDown();
+    }
     public void SetPool(GameObjectPool<Powerup> pool)
     {
         if (this.pool == null) this.pool = pool;

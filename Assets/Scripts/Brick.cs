@@ -9,6 +9,17 @@ public class Brick : MonoBehaviour, IPoolable<Brick>
 
     private int hitpoints;
     private GameObjectPool<Brick> pool;
+    private InterpolatedMover mover;
+
+    private void Awake()
+    {
+        mover = GetComponent<InterpolatedMover>();
+    }
+
+    public void Move()
+    {
+        mover.MoveDown();
+    }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {

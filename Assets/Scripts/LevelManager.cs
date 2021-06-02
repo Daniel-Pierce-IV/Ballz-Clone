@@ -61,14 +61,12 @@ public class LevelManager : MonoBehaviour
     {
         foreach (Brick brick in brickPool.GetObjectList())
         {
-            // TODO replace with more efficient code
-            if(brick.isActiveAndEnabled) brick.GetComponent<InterpolatedMover>().MoveDown();
+            if(brick.isActiveAndEnabled) brick.Move();
         }
 
         foreach (Powerup powerup in powerupPool.GetObjectList())
         {
-            // TODO replace with more efficient code
-            if (powerup.isActiveAndEnabled) powerup.GetComponent<InterpolatedMover>().MoveDown();
+            if (powerup.isActiveAndEnabled) powerup.Move();
         }
     }
 
