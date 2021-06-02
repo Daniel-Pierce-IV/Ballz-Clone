@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 1213737804784371258}
   - component: {fileID: 5724524978576727006}
   - component: {fileID: 623353068064735106}
+  - component: {fileID: 1400284528722902019}
   m_Layer: 0
   m_Name: Brick
   m_TagString: Untagged
@@ -125,7 +126,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lerpDuration: 0.3
   hitpointText: {fileID: 209989356947973161}
-  hitpoints: 0
+--- !u!114 &1400284528722902019
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2106763690938074773}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 65f1d15abef6b38448dac32413b7953b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lerpDuration: 0.5
 --- !u!1 &3361754241384810859
 GameObject:
   m_ObjectHideFlags: 0
