@@ -5,33 +5,25 @@ using UnityEngine;
 
 public class BrickManager : MonoBehaviour
 {
-    [SerializeField] private GameObject brickPrefab;
-    [SerializeField] private GameObject brickContainer;
+    [SerializeField] private BrickPool brickPool;
     [SerializeField] private Transform[] spawnPoints;
-    [SerializeField] private int lowerBrickSpawnLimitBuffer = 2;
-    [SerializeField] private int upperBrickSpawnLimitBuffer = 1;
+    //[SerializeField] private int lowerBrickSpawnLimitBuffer = 2;
+    //[SerializeField] private int upperBrickSpawnLimitBuffer = 1;
 
-    private List<Brick> bricks = new List<Brick>();
     private int currentPhase = 1;
     
-    private void CreateBrick(Vector3 position)
+    private void InitializeBrick(Brick brick, Vector3 position)
     {
-        Brick brick = Instantiate(
-            brickPrefab,
-            position,
-            Quaternion.identity,
-            brickContainer.transform).
-            GetComponent<Brick>();
-        
+        brick.transform.position = position;
         brick.SetHitpoints(currentPhase);
-        bricks.Add(brick);
+        brick.gameObject.SetActive(true);
     }
 
-    public void CreateBricks()
+    public void SpawnBricks()
     {
         foreach (var spawnPoint in spawnPoints)
         {
-            CreateBrick(spawnPoint.position);
+            InitializeBrick(brickPool.TakeObject(), spawnPoint.position);
         }
 
         currentPhase++;
@@ -40,9 +32,9 @@ public class BrickManager : MonoBehaviour
 
     private void MoveBricks()
     {
-        foreach (Brick brick in bricks)
+        foreach (Brick brick in brickPool.GetObjectList())
         {
-            brick.MoveDown();
+            if(brick.isActiveAndEnabled) brick.MoveDown();
         }
     }
 }

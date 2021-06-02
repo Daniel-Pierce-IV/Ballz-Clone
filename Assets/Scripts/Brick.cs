@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Brick : MonoBehaviour
+public class Brick : MonoBehaviour, IPoolable<Brick>
 {
     [SerializeField] private float lerpDuration = 0.5f;
     [SerializeField] private Text hitpointText;
@@ -16,6 +16,8 @@ public class Brick : MonoBehaviour
     private float startTimestamp;
 
     private int hitpoints;
+
+    private GameObjectPool<Brick> pool;
 
     // Update is called once per frame
     void Update()
@@ -59,7 +61,7 @@ public class Brick : MonoBehaviour
     {
         hitpoints--;
         RefreshHitpointText();
-        if (hitpoints <= 0) Destroy(gameObject);
+        if (hitpoints <= 0) DeactivateSelf();
     }
 
     public void RefreshHitpointText()
@@ -71,5 +73,17 @@ public class Brick : MonoBehaviour
     {
         hitpoints = value;
         RefreshHitpointText();
+    }
+
+    public void SetPool(GameObjectPool<Brick> pool)
+    {
+        if(this.pool == null) this.pool = pool;
+    }
+
+    private void DeactivateSelf()
+    {
+        hitpoints = 0;
+        pool.ReturnObject(this);
+        this.gameObject.SetActive(false);
     }
 }
