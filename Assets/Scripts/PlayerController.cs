@@ -2,16 +2,17 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class PlayerController : MonoBehaviour
 {
-    [SerializeField] private TrajectoryVisualizer tv;
-    [SerializeField] private Rigidbody2D Ball;
-    [SerializeField] private float ballSpeed = 5f;
+    public UnityEvent launchDirectionChanged;
+    public UnityEvent ballLaunched;
+
+    public static Vector2 launchDirection { get; private set; }
 
     private const int MOUSE_BUTTON_PRIMARY = 0;
     private Vector2 startPosition;
-    private Vector2 launchDirection;
 
     private void Update()
     {
@@ -38,8 +39,7 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            CalculateLaunchDirection(MousePositionVector2());
-            tv.UpdateTrajectory(Ball.position, launchDirection);
+            UpdateLaunchDirection(MousePositionVector2());
         }
     }
 
@@ -51,15 +51,19 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            CalculateLaunchDirection(Input.touches[0].position);
-            tv.UpdateTrajectory(Ball.position, launchDirection);
+            UpdateLaunchDirection(Input.touches[0].position);
         }
+    }
+
+    private void UpdateLaunchDirection(Vector3 newPosition)
+    {
+        CalculateLaunchDirection(newPosition);
+        launchDirectionChanged.Invoke();
     }
 
     private void StopDragging()
     {
-        tv.ResetTrajectory();
-        Ball.velocity = launchDirection * ballSpeed;
+        ballLaunched.Invoke();
     }
 
     private Vector2 MousePositionVector2()

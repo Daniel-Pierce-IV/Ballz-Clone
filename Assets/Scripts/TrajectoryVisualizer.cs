@@ -15,15 +15,17 @@ public class TrajectoryVisualizer : MonoBehaviour
         line = GetComponent<LineRenderer>();
     }
 
-    public void UpdateTrajectory(Vector2 start, Vector2 direction)
+    //public void UpdateTrajectory(Vector2 start, Vector2 direction)
+    public void UpdateTrajectory()
     {
         // TODO creating so many Vectors per second could be a memory/performance issue.
         // Look into caching line points
 
         Vector3[] positions = new Vector3[numOfPositions];
 
-        positions[0] = start;
-        positions[1] = start + direction * lineLength;
+        positions[0] = BallManager.launchPosition;
+        positions[1] = BallManager.launchPosition
+            + (Vector3) PlayerController.launchDirection * lineLength;
 
         line.positionCount = numOfPositions;
         line.SetPositions(positions);
