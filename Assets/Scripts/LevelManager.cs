@@ -7,6 +7,7 @@ public class LevelManager : MonoBehaviour
 {
     [SerializeField] private Transform[] spawnPoints;
     [SerializeField] private BrickPool brickPool;
+    [SerializeField] private PowerupPool powerupPool;
     [SerializeField] private int lowerSpawnLimitBuffer = 3;
     [SerializeField] private int upperSpawnLimitBuffer = 1;
 
@@ -17,7 +18,7 @@ public class LevelManager : MonoBehaviour
     {
         currentPhase++;
         ChooseSpawnPoints();
-        SpawnBricks();
+        SpawnEntities();
         MoveEntities();
     }
 
@@ -36,12 +37,38 @@ public class LevelManager : MonoBehaviour
         }
     }
 
+    private void InitializePowerup(Powerup powerup, Vector3 position)
+    {
+        powerup.transform.position = position;
+        powerup.gameObject.SetActive(true);
+    }
+
+    private void SpawnPowerup()
+    {
+        int index = UnityEngine.Random.Range(0, selectedSpawnPoints.Count);
+        Vector3 powerupPosition = selectedSpawnPoints[index].position;
+        selectedSpawnPoints.RemoveAt(index);
+        InitializePowerup(powerupPool.TakeObject(), powerupPosition);
+    }
+
+    private void SpawnEntities()
+    {
+        SpawnPowerup();
+        SpawnBricks();
+    }
+
     private void MoveEntities()
     {
         foreach (Brick brick in brickPool.GetObjectList())
         {
             // TODO replace with more efficient code
             if(brick.isActiveAndEnabled) brick.GetComponent<InterpolatedMover>().MoveDown();
+        }
+
+        foreach (Powerup powerup in powerupPool.GetObjectList())
+        {
+            // TODO replace with more efficient code
+            if (powerup.isActiveAndEnabled) powerup.GetComponent<InterpolatedMover>().MoveDown();
         }
     }
 
