@@ -3,16 +3,24 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BrickManager : MonoBehaviour
+public class LevelManager : MonoBehaviour
 {
-    [SerializeField] private BrickPool brickPool;
     [SerializeField] private Transform[] spawnPoints;
-    [SerializeField] private int lowerBrickSpawnLimitBuffer = 2;
-    [SerializeField] private int upperBrickSpawnLimitBuffer = 1;
+    [SerializeField] private BrickPool brickPool;
+    [SerializeField] private int lowerSpawnLimitBuffer = 3;
+    [SerializeField] private int upperSpawnLimitBuffer = 1;
 
-    private int currentPhase = 1;
+    private int currentPhase = 0;
     private List<Transform> selectedSpawnPoints = new List<Transform>();
     
+    public void UpdateLevel()
+    {
+        currentPhase++;
+        ChooseSpawnPoints();
+        SpawnBricks();
+        MoveEntities();
+    }
+
     private void InitializeBrick(Brick brick, Vector3 position)
     {
         brick.transform.position = position;
@@ -20,18 +28,15 @@ public class BrickManager : MonoBehaviour
         brick.gameObject.SetActive(true);
     }
 
-    public void SpawnBricks()
+    private void SpawnBricks()
     {
-        foreach (var spawnPoint in ChooseBrickSpawnPoints())
+        foreach (var spawnPoint in selectedSpawnPoints)
         {
             InitializeBrick(brickPool.TakeObject(), spawnPoint.position);
         }
-
-        currentPhase++;
-        MoveBricks();
     }
 
-    private void MoveBricks()
+    private void MoveEntities()
     {
         foreach (Brick brick in brickPool.GetObjectList())
         {
@@ -39,16 +44,16 @@ public class BrickManager : MonoBehaviour
         }
     }
 
-    private List<Transform> ChooseBrickSpawnPoints()
+    private List<Transform> ChooseSpawnPoints()
     {
         selectedSpawnPoints.Clear();
         selectedSpawnPoints.AddRange(spawnPoints);
 
-        // Selects a number between lowerBrickSpawnLimitBuffer and the total
-        // number of spawn points minus upperBrickSpawnLimitBuffer (both inclusive)
+        // Selects a number between lowerSpawnLimitBuffer and the total
+        // number of spawn points minus upperSpawnLimitBuffer (both inclusive)
         int numBricksToSpawn = UnityEngine.Random.Range(
-            lowerBrickSpawnLimitBuffer,
-            selectedSpawnPoints.Count - (upperBrickSpawnLimitBuffer - 1));
+            lowerSpawnLimitBuffer,
+            selectedSpawnPoints.Count - (upperSpawnLimitBuffer - 1));
 
         int numBricksToEliminate = selectedSpawnPoints.Count - numBricksToSpawn;
 
