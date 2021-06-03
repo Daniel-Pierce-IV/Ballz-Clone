@@ -11,11 +11,14 @@ public class PlayerController : MonoBehaviour
 
     public static Vector2 launchDirection { get; private set; }
 
+    private bool inputEnabled = true;
     private const int MOUSE_BUTTON_PRIMARY = 0;
     private Vector2 startPosition;
 
     private void Update()
     {
+        if (!inputEnabled) return;
+
         if (Input.touchCount > 0)
         {
             if(Input.touches[0].phase == TouchPhase.Ended) StopDragging();
@@ -63,7 +66,13 @@ public class PlayerController : MonoBehaviour
 
     private void StopDragging()
     {
+        inputEnabled = false;
         ballLaunched.Invoke();
+    }
+
+    public void EnableInput()
+    {
+        inputEnabled = true;
     }
 
     private Vector2 MousePositionVector2()
