@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityExtensions;
 
 public class InterpolatedMover : MonoBehaviour
 {
@@ -25,27 +26,14 @@ public class InterpolatedMover : MonoBehaviour
 
     private IEnumerator InterpolateMovement()
     {
-        while(transform.localPosition != endPosition && endPosition != null)
+        while(transform.localPosition != endPosition)
         {
-            if (Time.time <= startTimestamp + lerpDuration)
-            {
-                float y = Mathf.Lerp(startPosition.y, endPosition.y, CalculateLerpTime());
-                Vector3 newPosition = transform.localPosition;
-                newPosition.y = y;
-                transform.localPosition = newPosition;
+            transform.LerpLocalPositionY(
+                startPosition.y,
+                endPosition.y,
+                (Time.time - startTimestamp) / lerpDuration);
 
-                yield return null; // wait for the next frame
-            }
-            else
-            {
-                transform.localPosition = endPosition;
-            }
+            yield return null; // wait for the next frame
         }
-    }
-
-    // Returns 0.0 - 1.0 relative to startTimestamp
-    private float CalculateLerpTime()
-    {
-        return Mathf.Clamp((Time.time - startTimestamp) / lerpDuration, 0, 1);
     }
 }
