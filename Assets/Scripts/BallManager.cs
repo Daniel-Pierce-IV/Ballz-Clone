@@ -14,6 +14,7 @@ public class BallManager : MonoBehaviour
     public static Vector3 launchPosition { get; private set; }
 
     private List<Ball> balls = new List<Ball>();
+    private int totalBalls = 0;
     private int returnedBalls = 0;
     private int ballsToAdd = 0;
 
@@ -28,7 +29,7 @@ public class BallManager : MonoBehaviour
 
     private void UpdateBallCounterText()
     {
-        ballCounterText.text = returnedBalls + "x";
+        ballCounterText.text = totalBalls + "x";
     }
 
     public void LaunchBalls()
@@ -43,7 +44,7 @@ public class BallManager : MonoBehaviour
             ball.GetComponent<Rigidbody2D>().velocity = 
                 PlayerController.launchDirection * ballSpeed;
 
-            returnedBalls--;
+            totalBalls--;
             UpdateBallCounterText();
 
             yield return new WaitForSeconds(ballLaunchDelay);
@@ -65,7 +66,7 @@ public class BallManager : MonoBehaviour
 
         ball.SetManager(this);
         balls.Add(ball);
-        returnedBalls++;
+        totalBalls++;
     }
 
     private void CreatePowerupBalls()
@@ -87,6 +88,8 @@ public class BallManager : MonoBehaviour
 
         if (returnedBalls == balls.Count)
         {
+            totalBalls = balls.Count;
+            returnedBalls = 0;
             CreatePowerupBalls();
             UpdateBallCounterText();
             FindObjectOfType<GameController>().DeactivateBalls();
