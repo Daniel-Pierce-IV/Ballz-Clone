@@ -1,10 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class BallManager : MonoBehaviour
 {
     [SerializeField] private GameObject ballContainer;
+    [SerializeField] private Text ballCounterText;
     [SerializeField] private Ball ballPrefab;
     [SerializeField] private float ballSpeed = 5f;
     [SerializeField] private float ballLaunchDelay = 0.2f;
@@ -19,14 +21,18 @@ public class BallManager : MonoBehaviour
     void Start()
     {
         CreateBall();
+        UpdateBallCounterText();
         balls[0].transform.position = ballContainer.transform.position;
         UpdateBallPosition(balls[0].transform.position);
     }
 
+    private void UpdateBallCounterText()
+    {
+        ballCounterText.text = returnedBalls + "x";
+    }
+
     public void LaunchBalls()
     {
-        returnedBalls = 0;
-        CreatePowerupBalls();
         StartCoroutine("LaunchBallsWithDelay");
     }
 
@@ -36,6 +42,9 @@ public class BallManager : MonoBehaviour
         {
             ball.GetComponent<Rigidbody2D>().velocity = 
                 PlayerController.launchDirection * ballSpeed;
+
+            returnedBalls--;
+            UpdateBallCounterText();
 
             yield return new WaitForSeconds(ballLaunchDelay);
         }
@@ -56,6 +65,7 @@ public class BallManager : MonoBehaviour
 
         ball.SetManager(this);
         balls.Add(ball);
+        returnedBalls++;
     }
 
     private void CreatePowerupBalls()
@@ -77,6 +87,8 @@ public class BallManager : MonoBehaviour
 
         if (returnedBalls == balls.Count)
         {
+            CreatePowerupBalls();
+            UpdateBallCounterText();
             FindObjectOfType<GameController>().DeactivateBalls();
         }
     }
