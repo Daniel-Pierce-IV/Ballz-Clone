@@ -24,7 +24,7 @@ public class BallManager : MonoBehaviour
         CreateBall();
         UpdateBallCounterText();
         balls[0].transform.position = ballContainer.transform.position;
-        UpdateBallPosition(balls[0].transform.position);
+        UpdateLaunchPosition(balls[0].transform.position);
     }
 
     private void UpdateBallCounterText()
@@ -51,7 +51,7 @@ public class BallManager : MonoBehaviour
         }
     }
 
-    public void UpdateBallPosition(Vector3 newPosition)
+    public void UpdateLaunchPosition(Vector3 newPosition)
     {
         launchPosition = newPosition;
     }
@@ -83,7 +83,7 @@ public class BallManager : MonoBehaviour
     {
         returnedBalls++;
 
-        if (returnedBalls == 1) UpdateBallPosition(ball.transform.position);
+        if (returnedBalls == 1) UpdateLaunchPosition(ball.transform.position);
         else ball.MoveToLaunchPosition(launchPosition);
 
         if (returnedBalls == balls.Count)
