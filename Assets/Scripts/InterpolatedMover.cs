@@ -16,7 +16,7 @@ public class InterpolatedMover : MonoBehaviour
 
     public void MoveDown()
     {
-        startPosition = transform.localPosition;
+        startPosition = transform.position;
         endPosition = startPosition;
         endPosition.y = endPosition.y - yMoveAmount;
         startTimestamp = Time.time;
@@ -26,9 +26,9 @@ public class InterpolatedMover : MonoBehaviour
 
     private IEnumerator InterpolateMovement()
     {
-        while(transform.localPosition != endPosition)
+        while(transform.position != endPosition)
         {
-            transform.LerpLocalPositionY(
+            transform.LerpPositionY(
                 startPosition.y,
                 endPosition.y,
                 (Time.time - startTimestamp) / lerpDuration);

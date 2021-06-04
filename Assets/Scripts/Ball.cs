@@ -9,7 +9,6 @@ public class Ball : MonoBehaviour
     [SerializeField] private int bouncesBeforeIntervention = 5;
 
     private Rigidbody2D rb;
-    private Vector2 startPosition;
     private float lastBounceY;
     private int numOfSameYBounces = 0;
     private BallManager manager;
@@ -18,7 +17,6 @@ public class Ball : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        startPosition = rb.position;
         lastBounceY = rb.position.y;
     }
 
@@ -50,9 +48,7 @@ public class Ball : MonoBehaviour
         }
         else // Collided with kill zone
         {
-            startPosition = new Vector2(rb.position.x, startPosition.y);
             rb.velocity = Vector2.zero;
-            transform.position = startPosition;
             manager.ReturnBall(this);
         }
     }
@@ -67,44 +63,3 @@ public class Ball : MonoBehaviour
         transform.position = launchPosition;
     }
 }
-
-
-
-
-
-
-
-
-
-
-//void Update()
-//{
-//    if (transform.localPosition != endPosition && endPosition != null)
-//    {
-//        if (Time.time <= startTimestamp + lerpDuration)
-//        {
-//            float y = Mathf.Lerp(startPosition.y, endPosition.y, CalculateLerpTime());
-//            Vector3 newPosition = transform.localPosition;
-//            newPosition.y = y;
-//            transform.localPosition = newPosition;
-//        }
-//        else
-//        {
-//            transform.localPosition = endPosition;
-//        }
-//    }
-//}
-
-//public void MoveDown()
-//{
-//    startPosition = transform.localPosition;
-//    endPosition = startPosition;
-//    endPosition.y = endPosition.y - yMoveAmount;
-//    startTimestamp = Time.time;
-//}
-
-//// Returns 0.0 - 1.0 relative to startTimestamp
-//private float CalculateLerpTime()
-//{
-//    return Mathf.Clamp((Time.time - startTimestamp) / lerpDuration, 0, 1);
-//}
