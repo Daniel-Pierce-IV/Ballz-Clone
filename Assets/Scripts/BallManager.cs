@@ -12,6 +12,7 @@ public class BallManager : MonoBehaviour
     [SerializeField] private Ball ballPrefab;
     [SerializeField] private float ballSpeed = 5f;
     [SerializeField] private float ballLaunchDelay = 0.2f;
+    [SerializeField] private float ballReturnDuration = 0.25f;
 
     public static Vector3 launchPosition { get; private set; }
     
@@ -95,7 +96,7 @@ public class BallManager : MonoBehaviour
         ball.transform.SetPositionY(baselineY);
 
         if (returnedBalls == 1) UpdateLaunchPosition(ball.transform.position);
-        else ball.MoveToLaunchPosition(launchPosition);
+        else ball.MoveToLaunchPosition(launchPosition, ballReturnDuration);
 
         if (returnedBalls == balls.Count)
         {

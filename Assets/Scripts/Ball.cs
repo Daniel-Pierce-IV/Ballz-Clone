@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityExtensions;
 
 public class Ball : MonoBehaviour
 {
@@ -58,8 +59,28 @@ public class Ball : MonoBehaviour
         if (this.manager == null) this.manager = manager;
     }
 
-    public void MoveToLaunchPosition(Vector3 launchPosition)
+    //public void MoveToLaunchPosition(Vector3 launchPosition)
+    //{
+    //    transform.position = launchPosition;
+    //}
+
+    public void MoveToLaunchPosition(Vector3 launchPosition, float lerpDuration)
     {
-        transform.position = launchPosition;
+        StartCoroutine(InterpolateTo(launchPosition, lerpDuration));
+    }
+
+    private IEnumerator InterpolateTo(Vector3 endPosition, float duration)
+    {
+        Vector3 startPosition = transform.position;
+        float startTimestamp = Time.time;
+        
+        //while (transform.localPosition != endPosition)
+        while (transform.position != endPosition)
+        {
+            transform.LerpPosition(startPosition, endPosition,
+            (Time.time - startTimestamp) / duration);
+            
+            yield return null; // wait for the next frame
+        }
     }
 }
