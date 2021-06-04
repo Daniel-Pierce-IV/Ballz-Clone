@@ -6443,6 +6443,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ballContainer: {fileID: 680670162}
+  killZone: {fileID: 109922654}
   ballCounterText: {fileID: 211841184}
   ballPrefab: {fileID: 7162668730585093255, guid: 7484db86a183c5440acadf93e26d8d7d, type: 3}
   ballSpeed: 10

@@ -2,17 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityExtensions;
 
 public class BallManager : MonoBehaviour
 {
     [SerializeField] private GameObject ballContainer;
+    [SerializeField] private Transform killZone;
     [SerializeField] private Text ballCounterText;
     [SerializeField] private Ball ballPrefab;
     [SerializeField] private float ballSpeed = 5f;
     [SerializeField] private float ballLaunchDelay = 0.2f;
 
     public static Vector3 launchPosition { get; private set; }
-
+    
+    private float baselineY;
     private List<Ball> balls = new List<Ball>();
     private int totalBalls = 0;
     private int returnedBalls = 0;
@@ -21,10 +24,9 @@ public class BallManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        InitializeLaunchPosition();
         CreateBall();
         UpdateBallCounterText();
-        balls[0].transform.position = ballContainer.transform.position;
-        UpdateLaunchPosition(balls[0].transform.position);
     }
 
     private void UpdateBallCounterText()
@@ -49,6 +51,14 @@ public class BallManager : MonoBehaviour
 
             yield return new WaitForSeconds(ballLaunchDelay);
         }
+    }
+
+    private void InitializeLaunchPosition()
+    {
+        Vector3 position = killZone.position;
+        baselineY = position.y + ballPrefab.transform.localScale.y / 2 + 0.05f;
+        position.y = baselineY;
+        UpdateLaunchPosition(position);
     }
 
     public void UpdateLaunchPosition(Vector3 newPosition)
@@ -82,6 +92,7 @@ public class BallManager : MonoBehaviour
     public void ReturnBall(Ball ball)
     {
         returnedBalls++;
+        ball.transform.SetPositionY(baselineY);
 
         if (returnedBalls == 1) UpdateLaunchPosition(ball.transform.position);
         else ball.MoveToLaunchPosition(launchPosition);
