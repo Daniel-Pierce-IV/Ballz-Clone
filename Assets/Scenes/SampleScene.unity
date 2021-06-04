@@ -1660,6 +1660,7 @@ GameObject:
   - component: {fileID: 519420032}
   - component: {fileID: 519420031}
   - component: {fileID: 519420029}
+  - component: {fileID: 519420030}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -1675,6 +1676,20 @@ AudioListener:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 519420028}
   m_Enabled: 1
+--- !u!114 &519420030
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 519420028}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9d629daaf75d69147bb59556e9dbfdc6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  levelBoundaryLeft: {fileID: 1658216710}
+  levelBoundaryRight: {fileID: 2138728705}
 --- !u!20 &519420031
 Camera:
   m_ObjectHideFlags: 0
@@ -2424,7 +2439,7 @@ Transform:
   m_GameObject: {fileID: 654018210}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.72, y: 0.72, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 343221502}
   - {fileID: 1658216710}
@@ -6428,12 +6443,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ballContainer: {fileID: 680670162}
-  killZone: {fileID: 109922654}
   ballCounterText: {fileID: 211841184}
   ballPrefab: {fileID: 7162668730585093255, guid: 7484db86a183c5440acadf93e26d8d7d, type: 3}
   ballSpeed: 10
   ballLaunchDelay: 0.1
-  ballReturnDuration: 0.25
 --- !u!4 &1983463732
 Transform:
   m_ObjectHideFlags: 0
