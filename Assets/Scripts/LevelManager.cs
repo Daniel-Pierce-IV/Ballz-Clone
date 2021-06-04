@@ -10,6 +10,7 @@ public class LevelManager : MonoBehaviour
     [SerializeField] private PowerupPool powerupPool;
     [SerializeField] private int lowerSpawnLimitBuffer = 3;
     [SerializeField] private int upperSpawnLimitBuffer = 1;
+    [SerializeField] private float brickDoubleHitpointsChance = 0.25f;
 
     private int currentPhase = 0;
     private List<Transform> selectedSpawnPoints = new List<Transform>();
@@ -25,7 +26,12 @@ public class LevelManager : MonoBehaviour
     private void InitializeBrick(Brick brick, Vector3 position)
     {
         brick.transform.position = position;
-        brick.SetHitpoints(currentPhase);
+        
+        // Randomly double brick hitpoints
+        if(UnityEngine.Random.Range(0f, 1f) < brickDoubleHitpointsChance)
+            brick.SetHitpoints(currentPhase * 2);
+        else brick.SetHitpoints(currentPhase);
+
         brick.gameObject.SetActive(true);
     }
 
