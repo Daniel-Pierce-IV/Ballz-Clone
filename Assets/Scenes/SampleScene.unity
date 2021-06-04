@@ -1700,7 +1700,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 2
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_BackGroundColor: {r: 0, g: 0, b: 0, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -6448,6 +6448,9 @@ MonoBehaviour:
   ballPrefab: {fileID: 7162668730585093255, guid: 7484db86a183c5440acadf93e26d8d7d, type: 3}
   ballSpeed: 10
   ballLaunchDelay: 0.1
+  ballReturnDuration: 0.25
+  ballFastForwardDelay: 10
+  ballFastForwardFactor: 2
 --- !u!4 &1983463732
 Transform:
   m_ObjectHideFlags: 0

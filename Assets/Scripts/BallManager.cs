@@ -13,14 +13,18 @@ public class BallManager : MonoBehaviour
     [SerializeField] private float ballSpeed = 5f;
     [SerializeField] private float ballLaunchDelay = 0.2f;
     [SerializeField] private float ballReturnDuration = 0.25f;
+    [SerializeField] private float ballFastForwardDelay = 10f;
+    [SerializeField] private float ballFastForwardFactor = 2f;
 
     public static Vector3 launchPosition { get; private set; }
-    
+
+    private Vector2 launchVelocity;
     private float baselineY;
     private List<Ball> balls = new List<Ball>();
     private int totalBalls = 0;
     private int returnedBalls = 0;
     private int ballsToAdd = 0;
+    private bool isFastForwarding = false;
 
     // Start is called before the first frame update
     void Start()
@@ -37,20 +41,22 @@ public class BallManager : MonoBehaviour
 
     public void LaunchBalls()
     {
-        StartCoroutine("LaunchBallsWithDelay");
+        UpdateLaunchVelocity();
+        Invoke("StartFastForwarding", ballFastForwardDelay);
+        StartCoroutine(LaunchBallsWithDelay());
     }
 
     private IEnumerator LaunchBallsWithDelay()
     {
         foreach (Ball ball in balls)
         {
-            ball.GetComponent<Rigidbody2D>().velocity = 
-                PlayerController.launchDirection * ballSpeed;
-
+            ball.rb.velocity = launchVelocity;
             totalBalls--;
             UpdateBallCounterText();
 
-            yield return new WaitForSeconds(ballLaunchDelay);
+            // Launch balls at a faster rate if we're fast forwarding
+            if (!isFastForwarding) yield return new WaitForSeconds(ballLaunchDelay);
+            else yield return new WaitForSeconds(ballLaunchDelay / ballFastForwardFactor);
         }
     }
 
@@ -100,6 +106,8 @@ public class BallManager : MonoBehaviour
 
         if (returnedBalls == balls.Count)
         {
+            isFastForwarding = false;
+            CancelInvoke("StartFastForwarding");
             totalBalls = balls.Count;
             returnedBalls = 0;
             CreatePowerupBalls();
@@ -111,5 +119,23 @@ public class BallManager : MonoBehaviour
     public void IncrementBallCount()
     {
         ballsToAdd++;
+    }
+
+    private void StartFastForwarding()
+    {
+        isFastForwarding = true;
+        UpdateLaunchVelocity();
+
+        foreach (Ball ball in balls)
+        {
+            ball.rb.velocity *= ballFastForwardFactor;
+        }
+    }
+
+    private void UpdateLaunchVelocity()
+    {
+        launchVelocity = PlayerController.launchDirection * ballSpeed;
+
+        if (isFastForwarding) launchVelocity *= ballFastForwardFactor;
     }
 }

@@ -9,7 +9,7 @@ public class Ball : MonoBehaviour
     [SerializeField] private float minimumDeltaY = 0.05f;
     [SerializeField] private int bouncesBeforeIntervention = 5;
 
-    private Rigidbody2D rb;
+    public Rigidbody2D rb { get; private set; }
     private float lastBounceY;
     private int numOfSameYBounces = 0;
     private BallManager manager;
