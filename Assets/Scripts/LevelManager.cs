@@ -12,15 +12,23 @@ public class LevelManager : MonoBehaviour
     [SerializeField] private int upperSpawnLimitBuffer = 1;
     [SerializeField] private float brickDoubleHitpointsChance = 0.25f;
 
+    // Not configurable unless the way the stage/environment is set up changes
+    public static readonly float yMoveAmount = 1.1f;
+
     private int currentPhase = 0;
     private List<Transform> selectedSpawnPoints = new List<Transform>();
-    
-    public void UpdateLevel()
+
+    private void Start()
+    {
+        UpdateLevel(false);
+    }
+
+    public void UpdateLevel(bool shouldLerpMovement = true)
     {
         currentPhase++;
         ChooseSpawnPoints();
         SpawnEntities();
-        MoveEntities();
+        MoveEntities(shouldLerpMovement);
     }
 
     private void InitializeBrick(Brick brick, Vector3 position)
@@ -63,16 +71,16 @@ public class LevelManager : MonoBehaviour
         SpawnBricks();
     }
 
-    private void MoveEntities()
+    private void MoveEntities(bool shouldLerpMovement)
     {
         foreach (Brick brick in brickPool.GetObjectList())
         {
-            if(brick.isActiveAndEnabled) brick.Move();
+            if(brick.isActiveAndEnabled) brick.Move(shouldLerpMovement);
         }
 
         foreach (Powerup powerup in powerupPool.GetObjectList())
         {
-            if (powerup.isActiveAndEnabled) powerup.Move();
+            if (powerup.isActiveAndEnabled) powerup.Move(shouldLerpMovement);
         }
     }
 

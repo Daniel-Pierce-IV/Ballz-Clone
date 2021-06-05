@@ -7,9 +7,6 @@ public class InterpolatedMover : MonoBehaviour
 {
     [SerializeField] private float lerpDuration = 0.5f;
 
-    // Not configurable unless the way the stage/environment is set up changes
-    private const float yMoveAmount = 1.1f;
-
     private Vector3 startPosition;
     private Vector3 endPosition;
     private float startTimestamp;
@@ -18,7 +15,7 @@ public class InterpolatedMover : MonoBehaviour
     {
         startPosition = transform.position;
         endPosition = startPosition;
-        endPosition.y = endPosition.y - yMoveAmount;
+        endPosition.y = endPosition.y - LevelManager.yMoveAmount;
         startTimestamp = Time.time;
 
         StartCoroutine(InterpolateMovement());

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityExtensions;
 
 public class Brick : MonoBehaviour, IPoolable<Brick>
 {
@@ -16,9 +17,10 @@ public class Brick : MonoBehaviour, IPoolable<Brick>
         mover = GetComponent<InterpolatedMover>();
     }
 
-    public void Move()
+    public void Move(bool shouldLerpMovement)
     {
-        mover.MoveDown();
+        if (shouldLerpMovement) mover.MoveDown();
+        else transform.position -= Vector3.up * LevelManager.yMoveAmount;
     }
 
     private void OnCollisionEnter2D(Collision2D collision)

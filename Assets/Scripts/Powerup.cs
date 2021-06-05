@@ -12,10 +12,12 @@ public class Powerup : MonoBehaviour, IPoolable<Powerup>
         mover = GetComponent<InterpolatedMover>();
     }
 
-    public void Move()
+    public void Move(bool shouldLerpMovement)
     {
-        mover.MoveDown();
+        if (shouldLerpMovement) mover.MoveDown();
+        else transform.position -= Vector3.up * LevelManager.yMoveAmount;
     }
+
     public void SetPool(GameObjectPool<Powerup> pool)
     {
         if (this.pool == null) this.pool = pool;
