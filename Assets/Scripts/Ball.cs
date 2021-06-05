@@ -23,7 +23,8 @@ public class Ball : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        HandleBallStalling();
+        if (!collision.gameObject.CompareTag("Brick")) HandleBallStalling();
+        else numOfSameYBounces = 0;
     }
 
     private void HandleBallStalling()
