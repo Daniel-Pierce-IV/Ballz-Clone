@@ -60,11 +60,6 @@ public class Ball : MonoBehaviour
         if (this.manager == null) this.manager = manager;
     }
 
-    //public void MoveToLaunchPosition(Vector3 launchPosition)
-    //{
-    //    transform.position = launchPosition;
-    //}
-
     public void MoveToLaunchPosition(Vector3 launchPosition, float lerpDuration)
     {
         StartCoroutine(InterpolateTo(launchPosition, lerpDuration));
@@ -75,7 +70,6 @@ public class Ball : MonoBehaviour
         Vector3 startPosition = transform.position;
         float startTimestamp = Time.time;
         
-        //while (transform.localPosition != endPosition)
         while (transform.position != endPosition)
         {
             transform.LerpPosition(startPosition, endPosition,
