@@ -8,7 +8,6 @@ public class BallManager : MonoBehaviour
 {
     [SerializeField] private GameObject ballContainer;
     [SerializeField] private Transform killZone;
-    [SerializeField] private Text ballCounterText;
     [SerializeField] private Ball ballPrefab;
     [SerializeField] private float ballSpeed = 5f;
     [SerializeField] private float ballLaunchDelay = 0.2f;
@@ -25,18 +24,21 @@ public class BallManager : MonoBehaviour
     private int returnedBalls = 0;
     private int ballsToAdd = 0;
     private bool isFastForwarding = false;
+    private BallUIManager ballUIManager;
 
     // Start is called before the first frame update
     void Start()
     {
+        ballUIManager = GetComponent<BallUIManager>();
         InitializeLaunchPosition();
         CreateBall();
         UpdateBallCounterText();
+        ballUIManager.RepositionBallText(launchPosition);
     }
 
     private void UpdateBallCounterText()
     {
-        ballCounterText.text = totalBalls + "x";
+        ballUIManager.UpdateBallText(totalBalls);
     }
 
     public void LaunchBalls()
@@ -58,6 +60,8 @@ public class BallManager : MonoBehaviour
             if (!isFastForwarding) yield return new WaitForSeconds(ballLaunchDelay);
             else yield return new WaitForSeconds(ballLaunchDelay / ballFastForwardFactor);
         }
+
+        ballUIManager.EnableBallText(false);
     }
 
     private void InitializeLaunchPosition()
@@ -112,6 +116,8 @@ public class BallManager : MonoBehaviour
             returnedBalls = 0;
             CreatePowerupBalls();
             UpdateBallCounterText();
+            ballUIManager.RepositionBallText(launchPosition);
+            ballUIManager.EnableBallText(true);
             FindObjectOfType<GameController>().DeactivateBalls();
         }
     }

@@ -2,12 +2,14 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class LevelManager : MonoBehaviour
 {
     [SerializeField] private Transform[] spawnPoints;
     [SerializeField] private BrickPool brickPool;
     [SerializeField] private PowerupPool powerupPool;
+    [SerializeField] private Text currentPhaseText;
     [SerializeField] private int lowerSpawnLimitBuffer = 3;
     [SerializeField] private int upperSpawnLimitBuffer = 1;
     [SerializeField] private float brickDoubleHitpointsChance = 0.25f;
@@ -26,6 +28,7 @@ public class LevelManager : MonoBehaviour
     public void UpdateLevel(bool shouldLerpMovement = true)
     {
         currentPhase++;
+        currentPhaseText.text = currentPhase.ToString();
         ChooseSpawnPoints();
         SpawnEntities();
         MoveEntities(shouldLerpMovement);
