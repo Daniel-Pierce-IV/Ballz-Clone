@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 1400284528722902019}
   m_Layer: 0
   m_Name: Brick
-  m_TagString: Untagged
+  m_TagString: Brick
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -124,7 +124,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c71e95662b1c2845add2406ec8f1410, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lerpDuration: 0.3
   hitpointText: {fileID: 209989356947973161}
 --- !u!114 &1400284528722902019
 MonoBehaviour:
