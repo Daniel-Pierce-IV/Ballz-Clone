@@ -70,7 +70,7 @@ public class LevelManager : MonoBehaviour
 
     private void SpawnEntities()
     {
-        SpawnPowerup();
+        if(currentPhase > 1) SpawnPowerup();
         SpawnBricks();
     }
 
