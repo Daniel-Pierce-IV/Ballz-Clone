@@ -7,6 +7,7 @@ using UnityExtensions;
 public class BallManager : MonoBehaviour
 {
     [SerializeField] private GameObject ballContainer;
+    [SerializeField] private TrajectoryVisualizer visualizer;
     [SerializeField] private Transform killZone;
     [SerializeField] private Ball ballPrefab;
     [SerializeField] private float ballSpeed = 5f;
@@ -34,6 +35,7 @@ public class BallManager : MonoBehaviour
         CreateBall();
         UpdateBallCounterText();
         ballUIManager.RepositionBallText(launchPosition);
+        visualizer.EnableTrajectory();
     }
 
     private void UpdateBallCounterText()
