@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,6 +6,8 @@ using UnityExtensions;
 
 public class InterpolatedMover : MonoBehaviour
 {
+    public Action MoveComplete = () => { }; // Default behavior is nothing
+
     [SerializeField] private float lerpDuration = 0.5f;
 
     private Vector3 startPosition;
@@ -32,5 +35,7 @@ public class InterpolatedMover : MonoBehaviour
 
             yield return null; // wait for the next frame
         }
+
+        MoveComplete();
     }
 }

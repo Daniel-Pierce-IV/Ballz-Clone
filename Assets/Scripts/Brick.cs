@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityExtensions;
+using UnityEngine.SceneManagement;
 
 public class Brick : MonoBehaviour, IPoolable<Brick>
 {
@@ -15,6 +15,7 @@ public class Brick : MonoBehaviour, IPoolable<Brick>
     private void Awake()
     {
         mover = GetComponent<InterpolatedMover>();
+        mover.MoveComplete = OnMoveComplete;
     }
 
     public void Move(bool shouldLerpMovement)
@@ -56,5 +57,11 @@ public class Brick : MonoBehaviour, IPoolable<Brick>
         hitpoints = 0;
         pool.ReturnObject(this);
         this.gameObject.SetActive(false);
+    }
+
+    private void OnMoveComplete()
+    {
+        // Game over, restart the game
+        if (transform.position.y < -4) SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 }
