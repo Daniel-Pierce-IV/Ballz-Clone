@@ -66,6 +66,8 @@ public class PlayerController : MonoBehaviour
 
     private void StopDragging()
     {
+        if (launchDirection == Vector2.zero) return;
+
         inputEnabled = false;
         ballLaunched.Invoke();
     }
@@ -84,5 +86,7 @@ public class PlayerController : MonoBehaviour
     private void CalculateLaunchDirection(Vector2 currentPosition)
     {
         launchDirection = (startPosition - currentPosition).normalized;
+
+        if (launchDirection.y <= 0) launchDirection = Vector2.zero;
     }
 }

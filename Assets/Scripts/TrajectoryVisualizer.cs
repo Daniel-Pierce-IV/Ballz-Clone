@@ -16,7 +16,8 @@ public class TrajectoryVisualizer : MonoBehaviour
     public void UpdateTrajectory()
     {
         line.transform.up = PlayerController.launchDirection;
-        line.SetActive(true);
+        if (PlayerController.launchDirection != Vector2.zero) line.SetActive(true);
+        else line.SetActive(false);
     }
 
     public void DisableTrajectory()
