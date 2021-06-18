@@ -27,5 +27,6 @@ public class Powerup : MonoBehaviour, IPoolable<Powerup>
     {
         pool.ReturnObject(this);
         gameObject.SetActive(false);
+        AudioController.instance.QueueAudioClip(AudioController.AudioType.pickup);
     }
 }

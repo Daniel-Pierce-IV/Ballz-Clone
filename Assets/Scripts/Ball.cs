@@ -23,8 +23,12 @@ public class Ball : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (!collision.gameObject.CompareTag("Brick")) HandleBallStalling();
-        else numOfSameYBounces = 0;
+        if (collision.gameObject.CompareTag("Brick"))
+        {
+            numOfSameYBounces = 0;
+            AudioController.instance.QueueAudioClip(AudioController.AudioType.ball);
+        }
+        else HandleBallStalling();
     }
 
     private void HandleBallStalling()
