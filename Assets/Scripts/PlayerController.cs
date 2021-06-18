@@ -11,7 +11,7 @@ public class PlayerController : MonoBehaviour
 
     public static Vector2 launchDirection { get; private set; }
 
-    private bool inputEnabled = true;
+    private static bool inputEnabled = true;
     private const int MOUSE_BUTTON_PRIMARY = 0;
     private Vector2 startPosition;
 
@@ -72,7 +72,7 @@ public class PlayerController : MonoBehaviour
         ballLaunched.Invoke();
     }
 
-    public void EnableInput()
+    public static void EnableInput()
     {
         inputEnabled = true;
     }

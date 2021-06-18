@@ -61,6 +61,8 @@ public class Brick : MonoBehaviour, IPoolable<Brick>
 
     private void OnMoveComplete()
     {
+        PlayerController.EnableInput();
+
         // Game over, restart the game
         if (transform.position.y < -4) SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
