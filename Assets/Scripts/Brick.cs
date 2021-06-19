@@ -11,16 +11,22 @@ public class Brick : MonoBehaviour, IPoolable<Brick>
     private int hitpoints;
     private BrickPool pool;
     private InterpolatedMover mover;
+    private Collider2D collider;
 
     private void Awake()
     {
+        collider = GetComponent<Collider2D>();
         mover = GetComponent<InterpolatedMover>();
         mover.MoveComplete = OnMoveComplete;
     }
 
     public void Move(bool shouldLerpMovement)
     {
-        if (shouldLerpMovement) mover.MoveDown();
+        if (shouldLerpMovement)
+        {
+            collider.enabled = false;
+            mover.MoveDown();
+        }
         else transform.position -= Vector3.up * LevelManager.yMoveAmount;
     }
 
@@ -63,9 +69,10 @@ public class Brick : MonoBehaviour, IPoolable<Brick>
 
     private void OnMoveComplete()
     {
-        PlayerController.EnableInput();
-
         // Game over, restart the game
         if (transform.position.y < -4) SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+
+        collider.enabled = true;
+        PlayerController.EnableInput();
     }
 }
