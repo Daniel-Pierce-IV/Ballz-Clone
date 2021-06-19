@@ -17,11 +17,12 @@ public class LevelManager : MonoBehaviour
     // Not configurable unless the way the stage/environment is set up changes
     public static readonly float yMoveAmount = 1.1f;
 
-    private int currentPhase = 0;
+    public static int currentPhase { get; private set; }
     private List<Transform> selectedSpawnPoints = new List<Transform>();
 
     private void Start()
     {
+        currentPhase = 0;
         UpdateLevel(false);
     }
 

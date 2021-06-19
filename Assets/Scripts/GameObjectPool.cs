@@ -8,6 +8,9 @@ public abstract class GameObjectPool<T> : MonoBehaviour where T : Component, IPo
 
     // TODO research pros/cons of making this a singleton
 
+    // TODO consider including a built-in event that notifies 
+    // when all objects have been returned to the pool
+
     private List<T> objects = new List<T>();
     private Queue<T> objectQueue = new Queue<T>();
 
@@ -34,5 +37,10 @@ public abstract class GameObjectPool<T> : MonoBehaviour where T : Component, IPo
     public List<T> GetObjectList()
     {
         return objects;
+    }
+
+    public bool AllObjectsAreAvailable()
+    {
+        return objects.Count == objectQueue.Count;
     }
 }

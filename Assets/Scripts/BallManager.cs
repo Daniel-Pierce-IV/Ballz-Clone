@@ -16,6 +16,10 @@ public class BallManager : MonoBehaviour
     [SerializeField] private float ballFastForwardDelay = 10f;
     [SerializeField] private float ballFastForwardFactor = 2f;
 
+    // The number of balls as a percent of current phase number you 
+    // get as a bonus for destroying all bricks at once
+    [SerializeField] private float bonusBallsPercent = 0.2f;
+
     public static Vector3 launchPosition { get; private set; }
 
     private Vector2 launchVelocity;
@@ -32,7 +36,7 @@ public class BallManager : MonoBehaviour
     {
         ballUIManager = GetComponent<BallUIManager>();
         InitializeLaunchPosition();
-        CreateBall();
+        CreateBalls();
         UpdateBallCounterText();
         ballUIManager.RepositionBallText(launchPosition);
         visualizer.EnableTrajectory();
@@ -79,26 +83,25 @@ public class BallManager : MonoBehaviour
         launchPosition = newPosition;
     }
 
-    private void CreateBall()
+    private void CreateBalls(int numToCreate = 1)
     {
-        Ball ball = Instantiate(
+        for(int i = 0; i < numToCreate; i++)
+        {
+            Ball ball = Instantiate(
             ballPrefab,
             launchPosition,
             Quaternion.identity,
             ballContainer.transform);
 
-        ball.SetManager(this);
-        balls.Add(ball);
-        totalBalls++;
+            ball.SetManager(this);
+            balls.Add(ball);
+            totalBalls++;
+        }
     }
 
     private void CreatePowerupBalls()
     {
-        for (int i = 0; i < ballsToAdd; i++)
-        {
-            CreateBall();
-        }
-
+        CreateBalls(ballsToAdd);
         ballsToAdd = 0;
     }
 
@@ -145,5 +148,20 @@ public class BallManager : MonoBehaviour
         launchVelocity = PlayerController.launchDirection * ballSpeed;
 
         if (isFastForwarding) launchVelocity *= ballFastForwardFactor;
+    }
+
+    public void OnAllBricksDestroyed()
+    {
+        ballsToAdd += (int)Mathf.Ceil(LevelManager.currentPhase * bonusBallsPercent);
+        returnedBalls += totalBalls;
+        ballUIManager.EnableBallText(false);
+        StopAllCoroutines();
+        
+        foreach (Ball ball in balls)
+        {
+            if (ball.rb.velocity != Vector2.zero)
+                ball.rb.velocity = Vector2.down * ball.rb.velocity.magnitude;
+            else ball.MoveToLaunchPosition(launchPosition, ballReturnDuration);
+        }
     }
 }

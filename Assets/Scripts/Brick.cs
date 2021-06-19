@@ -9,7 +9,7 @@ public class Brick : MonoBehaviour, IPoolable<Brick>
     [SerializeField] private Text hitpointText;
 
     private int hitpoints;
-    private GameObjectPool<Brick> pool;
+    private BrickPool pool;
     private InterpolatedMover mover;
 
     private void Awake()
@@ -49,14 +49,16 @@ public class Brick : MonoBehaviour, IPoolable<Brick>
 
     public void SetPool(GameObjectPool<Brick> pool)
     {
-        if(this.pool == null) this.pool = pool;
+        if(this.pool == null) this.pool = (BrickPool) pool;
     }
 
     private void DeactivateSelf()
     {
-        hitpoints = 0;
-        pool.ReturnObject(this);
+        if (!gameObject.activeSelf) return;
+
         this.gameObject.SetActive(false);
+        pool.ReturnObject(this);
+        pool.OnAllBricksDestroyed();
     }
 
     private void OnMoveComplete()

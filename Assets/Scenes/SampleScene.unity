@@ -1674,6 +1674,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   prefab: {fileID: 623353068064735106, guid: 085208ed949ba0c46bb38f9e49aba06f, type: 3}
+  allBricksDestroyed:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1983463731}
+        m_TargetAssemblyTypeName: BallManager, Assembly-CSharp
+        m_MethodName: OnAllBricksDestroyed
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!4 &397789493
 Transform:
   m_ObjectHideFlags: 0
@@ -6745,7 +6760,7 @@ MonoBehaviour:
   currentPhaseText: {fileID: 530183524}
   lowerSpawnLimitBuffer: 3
   upperSpawnLimitBuffer: 1
-  brickDoubleHitpointsChance: 0.25
+  brickDoubleHitpointsChance: 0.2
 --- !u!4 &1519514837
 Transform:
   m_ObjectHideFlags: 0
@@ -8697,6 +8712,7 @@ MonoBehaviour:
   ballReturnDuration: 0.25
   ballFastForwardDelay: 10
   ballFastForwardFactor: 2
+  bonusBallsPercent: 0.2
 --- !u!4 &1983463732
 Transform:
   m_ObjectHideFlags: 0
